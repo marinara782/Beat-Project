@@ -169,8 +169,8 @@ def update():
                     beat['scoreStatus'] = 'miss'
             elif beat['scoreStatus']:
                 if beat['scoreStatus'] == 'hit':
-                    score += 1
-                    highestScore += 1
+                    score += 2
+                    highestScore += 2
                 if beat['scoreStatus'] == 'miss':
                     score -= 1
                 score_beat(beat)
@@ -284,8 +284,14 @@ def update_top_scores(player_name, highestScore):
         # Replace the lowest score if the player's score is higher
         min_score = min(top_scores, key=get_score)[1]
         if highestScore > min_score:
-            min_index = top_scores.index((player_name, min_score))
-            top_scores[min_index] = (player_name, highestScore)
+            # Check if the player's name and score are already in the list
+            player_entry = (player_name, min_score)
+            if player_entry in top_scores:
+                min_index = top_scores.index(player_entry)
+                top_scores[min_index] = (player_name, highestScore)
+            else:
+                # Add the player's score if it's not already in the list
+                top_scores.append((player_name, highestScore))
 
     # Sort the list in descending order based on score
     top_scores.sort(key=get_score, reverse=True)
